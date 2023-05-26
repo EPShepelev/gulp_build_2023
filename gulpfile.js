@@ -6,6 +6,20 @@ const uglify = require('gulp-uglify-es').default
 const browserSync = require('browser-sync').create()
 const autoprefixer = require('gulp-autoprefixer')
 const clean = require('gulp-clean')
+const avif = require('gulp-avif')
+const webp = require('gulp-webp')
+const imagemin = require('gulp-imagemin')
+const cached = require('gulp-cached')
+
+function images() {
+  return src(['app/images/src/*.*', '!app/images/src/*.svg'])
+    .pipe(avif({quality: 50}))
+    .pipe(src('app/images/src/*.*'))
+    .pipe(webp())
+    .pipe(src('app/images/src/*.*'))
+    .pipe(imagemin())
+    .pipe(dest('app/images/dest'))
+}
 
 function styles() {
   return src([
@@ -60,6 +74,7 @@ function building() {
 exports.styles = styles
 exports.scripts = scripts
 exports.watching = watching
+exports.images = images
 
 exports.build = series(cleanDist, building)
 exports.default = parallel(styles, scripts, watching)
