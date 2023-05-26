@@ -33,17 +33,14 @@ function scripts() {
 }
 
 function watching() {
-  watch(['app/scss/style.scss'], styles)
-  watch(['app/js/main.js'], scripts)
-  watch(['app/*.html']).on('change', browserSync.reload)
-}
-
-function browserLiveReload() {
   browserSync.init({
     server: {
         baseDir: "app/"
     }
   });
+  watch(['app/scss/style.scss'], styles)
+  watch(['app/js/main.js'], scripts)
+  watch(['app/*.html']).on('change', browserSync.reload)
 }
 
 function cleanDist() {
@@ -63,7 +60,6 @@ function building() {
 exports.styles = styles
 exports.scripts = scripts
 exports.watching = watching
-exports.browserLiveReload = browserLiveReload
 
 exports.build = series(cleanDist, building)
-exports.default = parallel(styles, scripts, browserLiveReload, watching)
+exports.default = parallel(styles, scripts, watching)
