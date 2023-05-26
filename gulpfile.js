@@ -9,16 +9,22 @@ const clean = require('gulp-clean')
 const avif = require('gulp-avif')
 const webp = require('gulp-webp')
 const imagemin = require('gulp-imagemin')
-const cached = require('gulp-cached')
+const newer = require('gulp-newer')
 
 function images() {
   return src(['app/images/src/*.*', '!app/images/src/*.svg'])
+    .pipe(newer('app/images/dist'))
     .pipe(avif({quality: 50}))
+
     .pipe(src('app/images/src/*.*'))
+    .pipe(newer('app/images/dist'))
     .pipe(webp())
+
     .pipe(src('app/images/src/*.*'))
+    .pipe(newer('app/images/dist'))
     .pipe(imagemin())
-    .pipe(dest('app/images/dest'))
+    
+    .pipe(dest('app/images/dist'))
 }
 
 function styles() {
@@ -35,8 +41,6 @@ function styles() {
 
 function scripts() {
   return src([
-    // EXAMPLE OF IMPORTING EXTERNAL JS
-    // 'node_modules/swiper/swiper-bundle.js',
     'app/js/**/*.js',
     '!app/js/main.min.js'
   ])
