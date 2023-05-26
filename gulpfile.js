@@ -21,7 +21,8 @@ function styles() {
 
 function scripts() {
   return src([
-    'node_modules/swiper/swiper-bundle.js',
+    // EXAMPLE OF IMPORTING EXTERNAL JS
+    // 'node_modules/swiper/swiper-bundle.js',
     'app/js/**/*.js',
     '!app/js/main.min.js'
   ])
