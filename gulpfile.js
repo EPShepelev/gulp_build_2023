@@ -11,6 +11,18 @@ const webp = require('gulp-webp')
 const imagemin = require('gulp-imagemin')
 const newer = require('gulp-newer')
 const svgSprite = require('gulp-svg-sprite')
+const fonter = require('gulp-fonter')
+const ttf2woff2 = require('gulp-ttf2woff2')
+
+function fonts() {
+  return src('app/fonts/src')
+  .pipe(fonter({
+    formats: ['woff', 'ttf']
+  }))
+  .pipe(src('app/fonts/*.ttf'))
+  .pipe(ttf2woff2())
+  .pipe(dest('app/fonts'))
+}
 
 function images() {
   return src(['app/images/src/*.*', '!app/images/src/*.svg'])
@@ -96,6 +108,7 @@ exports.scripts = scripts
 exports.watching = watching
 exports.images = images
 exports.sprite = sprite
+exports.fonts = fonts
 
 exports.build = series(cleanDist, building)
 exports.default = parallel(styles, images, scripts, watching)
